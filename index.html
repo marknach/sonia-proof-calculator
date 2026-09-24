@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101828">
+  <title>Sonia Proof Calculator</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./calculator.js" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <header class="topbar"><div><p class="eyebrow">LOCAL ARENA TOOL</p><h1>Sonia proof calculator</h1></div><div class="status"><span></span><span id="dataStatus">Loading unit data…</span></div></header>
+  <main class="shell">
+    <div class="intro"><p class="eyebrow">GUARD CRUSH · SKILL 2</p><h2>Will Sonia ignore this unit’s defense?</h2><p>Pick a target and enter its <strong>+DEF from runes and artifacts</strong>. The result is the minimum Sonia ATK that meets her ignore condition.</p></div>
+    <div class="layout">
+      <section class="card controls" aria-label="Calculator inputs">
+        <div class="section-title"><span class="step">01</span><div><p class="eyebrow">YOUR SIDE</p><h3>Target defense</h3></div></div>
+        <div class="field typeahead"><label for="unitInput">Unit</label><input id="unitInput" type="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="unitOptions" autocomplete="off" placeholder="Search unit name…"><div id="unitOptions" class="options" role="listbox" hidden></div><p id="selectedUnit" class="hint">Select a unit to use its level 40 base DEF.</p></div>
+        <div class="field"><label for="bonusDefense">+DEF on build</label><div class="number-wrap"><span>+</span><input id="bonusDefense" type="number" min="0" step="1" value="0" inputmode="numeric"></div></div>
+        <div class="subsection"><h4>Bonuses</h4><div class="inline-field"><label for="defenseTower">DEF tower / skill</label><div class="percent-wrap"><input id="defenseTower" type="number" min="0" max="100" step="0.1" value="20"><span>%</span></div></div><label class="check-row"><input id="defenseLeaderEnabled" type="checkbox"><span>Defense leader skill</span></label><div class="inline-field indented"><label for="defenseLeader">Leader bonus</label><div class="percent-wrap"><input id="defenseLeader" type="number" min="0" max="100" step="0.1" value="33" disabled><span>%</span></div></div></div>
+        <div class="divider"></div>
+        <div class="section-title"><span class="step sonia-step">02</span><div><p class="eyebrow">SONIA’S SIDE</p><h3>Attack bonuses</h3></div></div>
+        <div class="inline-field"><label for="attackTower">ATK tower / skill</label><div class="percent-wrap"><input id="attackTower" type="number" min="0" max="100" step="0.1" value="20"><span>%</span></div></div>
+        <div class="inline-field"><label for="windTower">Wind ATK tower / skill</label><div class="percent-wrap"><input id="windTower" type="number" min="0" max="100" step="0.1" value="21"><span>%</span></div></div>
+        <label class="check-row"><input id="attackLeaderEnabled" type="checkbox"><span>Attack leader skill</span></label><div class="inline-field indented"><label for="attackLeader">Leader bonus</label><div class="percent-wrap"><input id="attackLeader" type="number" min="0" max="100" step="0.1" value="33" disabled><span>%</span></div></div>
+      </section>
+      <section class="card result" aria-live="polite"><div class="result-heading"><p class="eyebrow">IGNORE DEFENSE THRESHOLD</p><span class="chip">DEF ≤ 60% of ATK</span></div><div id="resultBody" class="empty">Choose a target unit to see the threshold.</div><div class="method"><h4>How this is calculated</h4><p>Target DEF = base DEF × (1 + DEF tower + enabled DEF lead) + build +DEF. Sonia must reach at least target DEF ÷ 0.6. Her required <strong>+ATK on build</strong> subtracts her 867 base ATK and base-stat bonuses from the ATK and Wind towers and enabled ATK lead.</p><p>Leader percentages are editable because the leader can be another unit. Tower fields start at max values. This estimates the stat threshold before in-battle buffs, debuffs, passives, or rounding by the game.</p><p class="source">Unit stats: local SWARFARM catalog · <a href="https://swgt.io/monsterSearch/?com2usID=26113" target="_blank" rel="noopener">Sonia skill text</a></p></div></section>
+    </div>
+  </main>
+</body>
+</html>
