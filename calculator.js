@@ -31,14 +31,14 @@
   function calculate({ baseDefense, bonusDefense, defenseLeader = 0, attackLeader = 0, guildContent = false, targetRelic = null, soniaRelic = null }) {
     const values = [baseDefense, bonusDefense, defenseLeader, attackLeader];
     if (values.some((value) => !Number.isFinite(value) || value < 0) || typeof guildContent !== 'boolean' || !validRelic(targetRelic, 'target') || !validRelic(soniaRelic, 'sonia')) return null;
-    const targetRelicMain = targetRelic?.mainType === 'def' ? relicMainPercent(targetRelic.level) : 0;
-    const soniaRelicMain = soniaRelic?.mainType === 'atk' ? relicMainPercent(soniaRelic.level) : 0;
     const targetRelicMultiplier = relicMultiplier(targetRelic?.exclusive);
     const soniaRelicMultiplier = relicMultiplier(soniaRelic?.exclusive);
-    const defenseBeforeExclusive = baseDefense * (1 + (MAX_TOWERS.defense + (guildContent ? MAX_GUILD_SKILLS.defense : 0) + defenseLeader + targetRelicMain) / 100) + bonusDefense;
+    // The entered build +DEF already includes the relic's main property.
+    const defenseBeforeExclusive = baseDefense * (1 + (MAX_TOWERS.defense + (guildContent ? MAX_GUILD_SKILLS.defense : 0) + defenseLeader) / 100) + bonusDefense;
     const effectiveDefense = defenseBeforeExclusive * (1 + targetRelicMultiplier);
     const requiredTotalAttack = Math.ceil(effectiveDefense / IGNORE_RATIO - 1e-9);
-    const soniaBonusAttack = SONIA_BASE_ATTACK * (MAX_TOWERS.attack + MAX_TOWERS.windAttack + (guildContent ? MAX_GUILD_SKILLS.attack : 0) + attackLeader + soniaRelicMain) / 100;
+    // The requested build +ATK likewise includes her relic's main property.
+    const soniaBonusAttack = SONIA_BASE_ATTACK * (MAX_TOWERS.attack + MAX_TOWERS.windAttack + (guildContent ? MAX_GUILD_SKILLS.attack : 0) + attackLeader) / 100;
     const requiredBuildAttack = Math.max(0, Math.ceil(requiredTotalAttack / (1 + soniaRelicMultiplier) - SONIA_BASE_ATTACK - soniaBonusAttack - 1e-9));
     return { effectiveDefense, defenseBeforeExclusive, requiredTotalAttack, soniaBonusAttack, requiredBuildAttack, targetRelicMultiplier, soniaRelicMultiplier };
   }
